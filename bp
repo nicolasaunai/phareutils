@@ -24,16 +24,13 @@ fi
 
 
 if [ ${machine}  = "kaa" ]; then
-    source ~/phare_env2.bin/activate
+    source ~/phare_env2/bin/activate
     source /opt/rh/gcc-toolset-11/enable # toolset-13 lacks gfortran
-    module load mpi
     CMAKE_HDF5="-DHDF5_C_LIBRARIES=/usr/lib64/openmpi/lib/libhdf5.so -DHDF5_C_INCLUDE_DIRS=/usr/include/openmpi-x86_64  -DHDF5_LIBRARY_PATH=/usr/lib64/openmpi/lib/"
-elif [ ${machine} = "cholesky" ]; then
-    module load cmake gcc/10.2.0 openmpi hdf5 mambaforge
 fi
 
 cd $BUILD_DIR
-
+echo $PHARE_DIR
 CMAKE_CXX_FLAGS="-DNDEBUG -g3 -O3 -march=native -mtune=native -DPHARE_DIAG_DOUBLES=1"
 cmake  -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS}" -Dphare_configurator=OFF -DtestMPI=OFF -DdevMode=OFF  ${CMAKE_HDF5} -DwithCcache=0 ${PHARE_DIR} 
 make -j
@@ -62,4 +59,5 @@ make -j
 #chmod +x build.sh
 #[ ! -d "build" ] && ./build.sh
 #
+
 
